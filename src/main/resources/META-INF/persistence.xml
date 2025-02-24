@@ -4,27 +4,34 @@
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
 
-  <persistence-unit name="demojpa">
+  <persistence-unit name="banque-jpa">
 
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
     <properties>
       <!-- Configuration de la connexion à MariaDB -->
-      <property name="jakarta.persistence.jdbc.url" value="jdbc:mariadb://localhost:3306/demojpa?serverTimezone=UTC"/>
+      <property name="jakarta.persistence.jdbc.url" value="jdbc:mariadb://localhost:3306/banque?createDatabaseIfNotExist=true&amp;serverTimezone=UTC"/>
       <property name="jakarta.persistence.jdbc.user" value="root"/>
       <property name="jakarta.persistence.jdbc.password" value=""/>
       <property name="jakarta.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver"/>
 
       <!-- Configuration de Hibernate -->
       <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect"/>
-      <property name="hibernate.hbm2ddl.auto" value="update"/> <!-- "update" crée/modifie les tables si nécessaire -->
-      <property name="hibernate.show_sql" value="true"/> <!-- Affiche les requêtes SQL dans la console -->
-      <property name="hibernate.format_sql" value="true"/> <!-- Formate les requêtes SQL dans la console -->
+      <property name="hibernate.hbm2ddl.auto" value="update"/> <!-- Garde les données et met à jour la structure -->
+      <property name="hibernate.dialect.storage_engine" value="innodb"/> <!-- Assure l'utilisation d'InnoDB -->
+      <property name="hibernate.show_sql" value="true"/> <!-- Affiche les requêtes SQL -->
+      <property name="hibernate.format_sql" value="true"/> <!-- Formate les requêtes SQL -->
+      <property name="hibernate.use_sql_comments" value="true"/> <!-- Ajoute des commentaires dans les requêtes SQL -->
 
       <!-- Optimisation -->
       <property name="hibernate.jdbc.batch_size" value="10"/>
       <property name="hibernate.order_inserts" value="true"/>
       <property name="hibernate.order_updates" value="true"/>
+
+      <!-- Gestion du cache Hibernate -->
+      <property name="hibernate.cache.use_second_level_cache" value="false"/>
+      <property name="hibernate.cache.use_query_cache" value="false"/>
+
     </properties>
 
   </persistence-unit>

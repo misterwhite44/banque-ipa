@@ -1,25 +1,23 @@
 package fr.epsi.b3devc1.bo;
 
 import jakarta.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "CLIENT")
 public class Client {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Integer id;
+    private Long id;
 
-    @Column(name = "NOM", nullable = false)
     private String nom;
-
-    @Column(name = "PRENOM", nullable = false)
     private String prenom;
 
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-    private List<Emprunt> emprunts;
+    @ManyToMany
+    @JoinTable(name = "client_compte",
+            joinColumns = @JoinColumn(name = "client_id"),
+            inverseJoinColumns = @JoinColumn(name = "compte_id"))
+    private Set<Compte> comptes = new HashSet<>();
 
     public Client() {}
 
@@ -28,32 +26,9 @@ public class Client {
         this.prenom = prenom;
     }
 
-    // ✅ GETTERS & SETTERS
-    public Integer getId() {
-        return id;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
-    }
-
-    public List<Emprunt> getEmprunts() {
-        return emprunts;
-    }
-
-    public void setEmprunts(List<Emprunt> emprunts) {
-        this.emprunts = emprunts;
+    public void ajouterCompte(Compte compte) {
+        comptes.add(compte);
+        compte.getClients().add(this);
     }
 }
+
